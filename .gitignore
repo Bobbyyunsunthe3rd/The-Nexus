@@ -1,0 +1,22 @@
+# API keys 
+.env
+
+# CRM data 
+*.xlsx
+*.xls
+*.csv
+
+# Python files
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
+
+# Editor files
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

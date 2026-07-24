@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRM Analytics Dashboard</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Chart Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Excel Library -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="logo-icon">
+                ◆
+            </div>
+
+            <div>
+
+                <h2>
+                    CRM ANALYTICS
+                </h2>
+
+                <span>
+                    REAL ESTATE
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <nav>
+
+
+            <a class="active">
+
+                <span>▦</span>
+                Dashboard
+
+            </a>
+
+
+            <a href="leads.html">
+
+                <span>♙</span>
+                Leads   
+
+            </a>
+
+
+            <a href="campaigns.html">
+
+                <span>◉</span>
+                Campaigns  
+
+            </a>
+
+
+            <a href="sales.html">
+
+                <span>♧</span>
+                Sales Team
+
+            </a>
+
+
+            <a href="reports.html">
+
+                <span>▥</span>
+                Reports   
+
+            </a>
+
+
+            <a>
+
+                <span>⚙</span>
+                Settings   
+
+            </a>
+
+
+        </nav>
+
+
+
+        <div class="profile">
+
+
+            <div class="avatar" id="user-avatar">
+                TC  <!-- temporary solution -->
+            </div>
+
+
+            <div>
+
+                <strong id="username">
+                    The Cascades
+                </strong>
+
+                <small>
+                    Admin
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+
+
+    <!-- ================= MAIN AREA ================= -->
+
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+
+        <header class="header">
+
+
+            <div>
+
+                <p class="welcome">
+                    Welcome back, Admin!
+                </p>
+
+
+                <h1>
+                    Lead Performance Dashboard
+                </h1>
+
+
+                <p>
+                    Real estate CRM insights at a glance.
+                </p>
+
+
+            </div>
+
+
+
+            <button class="date-picker">
+
+                📅
+                <span id="current-date"></span>
+
+            </button>
+
+
+
+        </header>
+
+        <!-- ================= EXCEL UPLOAD ================= -->
+
+
+        <section class="upload-panel">
+
+
+            <h3>
+                Upload CRM Data
+            </h3>
+
+
+            <p>
+                Upload your Excel (.xlsx) or CSV file to generate analytics.
+            </p>
+
+
+
+            <label class="upload-box">
+
+
+                <span class="upload-icon">
+                 📂
+                </span>
+
+
+                <span>
+                    Drop your file here or click to browse
+                </span>
+
+
+                <input 
+                type="file"
+                id="file-upload"
+                accept=".xlsx,.csv">
+
+
+            </label>
+
+
+
+            <p id="upload-status">
+                No file uploaded
+            </p>
+
+
+
+            <button id="upload-btn">
+                Generate Dashboard
+            </button>
+
+
+
+        </section>
+
+
+        <!-- ================= KPI CARDS ================= -->
+
+
+        <section class="kpi-container">
+
+
+            <div class="kpi-card">
+
+
+                <div class="icon">
+                    👥
+                </div>
+
+
+                <div>
+
+                    <p>
+                        Total Leads
+                    </p>
+
+                    <h2 id="total-leads">
+                        -
+                    </h2>
+
+
+                    <span class="growth">
+                        ↑ 12.5% vs last month
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="kpi-card">
+
+
+                <div class="icon">
+                    ✓
+                </div>
+
+
+                <div>
+
+                    <p>
+                        Qualified Leads
+                    </p>
+
+
+                    <h2 id="qualified-leads">
+                        -
+                    </h2>
+
+
+                    <span class="growth">
+                        ↑ 8.3% vs last month
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="kpi-card">
+
+
+                <div class="icon">
+                    📈
+                </div>
+
+
+                <div>
+
+                    <p>
+                        Conversions
+                    </p>
+
+
+                    <h2 id="conversions">
+                        -
+                    </h2>
+
+
+                    <span class="growth">
+                        ↑ 5.6% vs last month
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="kpi-card">
+
+
+                <div class="icon gold">
+                    🔥
+                </div>
+
+
+                <div>
+
+                    <p>
+                        Hot Leads
+                    </p>
+
+
+                    <h2 id="hot-leads">
+                        -
+                    </h2>
+
+
+                    <span class="growth">
+                        ↑ 15.2% vs last month
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+
+        <!-- ================= FILTER SECTION ================= -->
+
+
+        <section class="filter-panel">
+
+
+            <h3>
+                Filters
+            </h3>
+
+
+
+            <div class="filters">
+
+
+                <select id="salesperson-stats">
+
+                    <option>
+                        Select Salesperson
+                    </option>
+
+                </select>
+
+
+
+                <select id="lead-campaigns">
+
+
+                    <option>
+                        Select Campaign
+                    </option>
+
+
+                </select>
+
+
+
+                <button>
+                    Apply Filters
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- ================= ANALYTICS ================= -->
+
+
+        <section class="analytics-grid">
+
+
+
+            <div class="chart-card">
+
+
+                <div class="card-header">
+
+                    <h3>
+                        Leads Over Time
+                    </h3>
+
+
+                    <button>
+                        Monthly ▼
+                    </button>
+
+
+                </div>
+
+
+
+                <canvas id="leadChart"></canvas>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="table-card">
+
+
+                <div class="card-header">
+
+                    <h3>
+                        Top Salesperson Performance
+                    </h3>
+
+
+                    <button>
+                        View All
+                    </button>
+
+
+                </div>
+
+
+
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Salesperson
+                            </th>
+
+
+                            <th>
+                                Qualified Leads
+                            </th>
+
+
+                            <th>
+                                Unqualified
+                            </th>
+
+
+                            <th>
+                                Conversion
+                            </th>
+
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody id="sales-table">
+
+
+                    </tbody>
+
+
+
+                </table>
+
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+
+
+        <!-- ================= SOURCE DISTRIBUTION ================= -->
+
+
+        <section class="source-card">
+
+
+            <h3>
+                Lead Source Distribution
+            </h3>
+
+
+
+            <div class="sources">
+
+
+                <div>
+                    🌐 Website
+                    <strong>
+                        35%
+                    </strong>
+                </div>
+
+
+                <div>
+                    Facebook Ads
+                    <strong>
+                        25%
+                    </strong>
+                </div>
+
+
+                <div>
+                    Google Ads
+                    <strong>
+                        20%
+                    </strong>
+                </div>
+
+
+                <div>
+                    👥 Referral
+                    <strong>
+                        10%
+                    </strong>
+                </div>
+
+
+                <div>
+                    ⋯ Others
+                    <strong>
+                        10%
+                    </strong>
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+
+    </main>
+
+
+
+</div>
+
+
+
+
+
+<!-- Javascript -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

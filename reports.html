@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CRM Reports</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link rel="stylesheet" href="leads.css">
+<link rel="stylesheet" href="reports.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+
+<body>
+
+
+<div id="notification-container"></div>
+
+
+<div class="dashboard">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+
+<div class="brand">
+
+<div class="logo-icon">
+◆
+</div>
+
+
+<div>
+
+<h2>
+CRM ANALYTICS
+</h2>
+
+
+<span>
+REAL ESTATE
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+<nav>
+
+
+<a href="index.html">
+
+<span>▦</span>
+Dashboard
+
+</a>
+
+
+<a href="leads.html">
+
+<span>♟</span>
+Leads
+
+</a>
+
+
+<a href="campaigns.html">
+
+<span>◉</span>
+Campaigns
+
+</a>
+
+
+
+<a href="sales.html">
+
+<span>♧</span>
+Sales Team
+
+</a>
+
+
+
+<a href="reports.html" class="active">
+
+<span>▥</span>
+Reports
+
+</a>
+
+
+
+<a>
+
+<span>⚙</span>
+Settings
+
+</a>
+
+
+
+</nav>
+
+
+
+
+<div class="profile">
+
+
+<div class="avatar">
+
+TC
+
+</div>
+
+
+<div>
+
+<strong>
+The Cascades
+</strong>
+
+
+<small>
+Admin
+</small>
+
+
+</div>
+
+
+</div>
+
+
+
+</aside>
+
+
+
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+
+<header class="header">
+
+
+<div>
+
+
+<p class="welcome">
+Reports
+</p>
+
+
+<h1>
+CRM Report Generator
+</h1>
+
+
+<p>
+Create management-ready reports from your CRM data.
+</p>
+
+
+</div>
+
+
+
+<button class="date-picker">
+
+📅 <span id="current-date"></span>
+
+</button>
+
+
+</header>
+
+
+
+
+
+<section class="card">
+
+
+<h3>
+Available Metrics
+</h3>
+
+
+<p class="section-description">
+Select the information you want included in the report.
+</p>
+
+
+
+<div class="report-grid">
+
+
+
+<div class="report-category">
+
+
+<h4>
+Lead Performance
+</h4>
+
+
+<label>
+<input type="checkbox" class="metric"
+data-name="Total Leads"
+data-value-id="total-leads">
+
+Total Leads
+
+</label>
+
+
+
+<label>
+<input type="checkbox" class="metric"
+data-name="Hot Leads"
+data-value-id="hot-leads">
+
+Hot Leads
+
+</label>
+
+
+
+<label>
+<input type="checkbox" class="metric"
+data-name="Conversions"
+data-value-id="conversions">
+
+Conversions
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="report-category">
+
+
+<h4>
+Sales Performance
+</h4>
+
+
+<label>
+
+<input type="checkbox" class="metric"
+data-name="Active Representatives"
+data-value="sales">
+
+Active Representatives
+
+</label>
+
+
+<label>
+
+<input type="checkbox" class="metric"
+data-name="Total Calls"
+data-value="calls">
+
+Total Calls
+
+</label>
+
+
+<label>
+
+<input type="checkbox" class="metric"
+data-name="Conversion Rate"
+data-value="conversion">
+
+Conversion Rate
+
+</label>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="report-category">
+
+
+<h4>
+Marketing Performance
+</h4>
+
+
+<label>
+
+<input type="checkbox" class="metric"
+data-name="Top Campaign"
+data-value="campaign">
+
+Top Campaign
+
+</label>
+
+
+<label>
+
+<input type="checkbox" class="metric"
+data-name="Lead Sources"
+data-value="sources">
+
+Lead Sources
+
+</label>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<button id="generate-report">
+
+Generate Report
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="card">
+
+
+<h3>
+Report Preview
+</h3>
+
+
+
+<div id="report-preview">
+
+No metrics selected.
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="card">
+
+
+<h3>
+Business Insights
+</h3>
+
+
+
+<div id="insights">
+
+Select metrics and generate a report to receive AI insights.
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+</main>
+
+
+</div>
+
+
+
+<script src="reports.js"></script>
+
+
+</body>
+
+</html>
