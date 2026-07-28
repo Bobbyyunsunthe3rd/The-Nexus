@@ -273,7 +273,53 @@ function updateKPIs(){
     :
     "0%";
 
+    /* ======================================
+            SAVE REPORT ANALYTICS
+            Used by Reports page.
+    ====================================== */
 
+    let existingAnalytics =
+    sessionStorage.getItem(
+        "reportAnalytics"
+    );
+
+
+    let reportAnalytics =
+    existingAnalytics
+    ?
+    JSON.parse(existingAnalytics)
+    :
+    {};
+
+
+
+    reportAnalytics.leads = {
+
+        total: crmData.length,
+
+        hotLeads: hotLeads,
+
+        qualified: qualified,
+
+        conversions: converted,
+
+        conversionRate:
+        conversionRate
+        ?
+        Number(
+            conversionRate.toFixed(1)
+        )
+        :
+        0
+
+    };
+
+
+
+    sessionStorage.setItem(
+        "reportAnalytics",
+        JSON.stringify(reportAnalytics)
+    );
 
 }
 
