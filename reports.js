@@ -1,261 +1,214 @@
-let crmData = [];
+/* ======================================
+   CRM REPORT GENERATOR
+   Uses generated analytics only.
+   Does NOT read CRM files.
+====================================== */
+
+
+let lastReportMetrics = [];
+let lastInsightSections = [];
+let generatedAIReport = null;
+let generatedReportHTML = "";
 
 
 
-/*
-======================================
-REPORT METRIC ENGINE
 
-To add a new metric later:
-1. Add a new entry here
-2. Add the checkbox in reports.html
-
-No switch statements required.
-======================================
-*/
+/* ======================================
+   NOTIFICATION SYSTEM
+====================================== */
 
 
-const metricFunctions = {
+function showNotification(title,message){
+
+    let container =
+    document.getElementById(
+        "notification-container"
+    );
 
 
-    "Total Leads": ()=>{
+    if(!container){
 
-        return crmData.length;
+        container =
+        document.createElement("div");
 
-    },
+        container.id =
+        "notification-container";
 
-
-
-    "Hot Leads": ()=>{
-
-        return crmData.filter(
-            lead=>{
-
-                let hotness =
-                Number(
-                    lead["Lead Hotness"] || 0
-                );
-
-
-                return hotness > 50;
-
-            }
-        ).length;
-
-    },
-
-
-
-    "Active Representatives": ()=>{
-
-        return new Set(
-
-            crmData.map(
-                lead =>
-                String(
-                    lead["Attended By"] || ""
-                ).trim()
-            )
-
-            .filter(
-                name =>
-                name !== ""
-                &&
-                name !== "N/A"
-            )
-
-        ).size;
-
-    },
-
-
-
-    "Total Calls": ()=>{
-
-        return crmData.reduce(
-
-            (total,lead)=>{
-
-
-                return total +
-
-                Number(
-                    lead["Total Incoming Answered Calls"]
-                    ||
-                    lead["Total incoming answered calls"]
-                    ||
-                    0
-                )
-
-                +
-
-                Number(
-                    lead["Total Outgoing Answered Calls"]
-                    ||
-                    lead["Total outgoing answered calls"]
-                    ||
-                    0
-                );
-
-
-            },
-
-            0
-
+        document.body.appendChild(
+            container
         );
-
-    },
-
-
-
-    "Conversion Rate": ()=>{
-
-
-        let converted =
-        crmData.filter(
-            lead=>{
-
-
-                let stage =
-                String(
-                    lead["Lead Stage"] || ""
-                )
-                .toLowerCase();
-
-
-                return(
-                    stage.includes("booked")
-                    ||
-                    stage.includes("site visit completed")
-                );
-
-
-            }
-        ).length;
-
-
-
-        if(!crmData.length){
-
-            return "0%";
-
-        }
-
-
-
-        return(
-            (
-                converted /
-                crmData.length
-            )
-            *
-            100
-        )
-        .toFixed(1)
-        +
-        "%";
-
-    },
-
-
-
-    "Top Campaign": ()=>{
-
-
-        let campaigns={};
-
-
-
-        crmData.forEach(
-            lead=>{
-
-
-                let campaign =
-                lead["First Campaign"]
-                ||
-                "Unknown";
-
-
-                campaign =
-                String(campaign).trim();
-
-
-
-                campaigns[campaign] =
-                (
-                    campaigns[campaign]
-                    ||
-                    0
-                )
-                +
-                1;
-
-
-            }
-        );
-
-
-
-        let result =
-        Object.entries(campaigns)
-        .sort(
-            (a,b)=>b[1]-a[1]
-        )[0];
-
-
-        return result
-        ?
-        result[0]
-        :
-        "No Data";
-
-
-    },
-
-
-
-    "Lead Sources": ()=>{
-
-
-        let sources = new Set();
-
-
-        crmData.forEach(
-            lead=>{
-
-
-                let source =
-                lead["First Source of Enquiry"]
-                ||
-                lead["First Source"]
-                ||
-                "";
-
-
-                if(source){
-
-                    sources.add(source);
-
-                }
-
-
-            }
-        );
-
-
-
-        return sources.size;
-
 
     }
 
 
-};
+
+    const notification =
+    document.createElement("div");
+
+
+    notification.className =
+    "dashboard-notification";
+
+
+    notification.innerHTML = `
+
+        <div class="notification-icon">
+            ❗
+        </div>
+
+        <div>
+
+            <h4>${title}</h4>
+
+            <p>${message}</p>
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        notification
+    );
+
+
+    setTimeout(()=>{
+
+        notification.classList.add(
+            "hide"
+        );
+
+
+        setTimeout(()=>{
+
+            notification.remove();
+
+        },350);
+
+
+    },3500);
+
+}
 
 
 
 
 
+/* ======================================
+   LOAD SAVED ANALYTICS
+====================================== */
+
+
+function getReportAnalytics(){
+
+    let analytics =
+    sessionStorage.getItem(
+        "reportAnalytics"
+    );
+
+
+    if(!analytics){
+
+        return null;
+
+    }
+
+
+    try{
+
+        return JSON.parse(
+            analytics
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Analytics storage error:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+
+
+
+/* ======================================
+   METRIC LOOKUP
+====================================== */
+
+
+function getMetricValue(metricName){
+
+
+    const analytics =
+    getReportAnalytics();
+
+
+    if(!analytics){
+
+        return "N/A";
+
+    }
+
+
+
+    const metrics = {
+
+
+        "Total Leads":
+        analytics.leads?.total,
+
+
+        "Hot Leads":
+        analytics.leads?.hotLeads,
+
+
+        "Conversions":
+        analytics.leads?.conversions,
+
+
+        "Conversion Rate":
+        analytics.leads?.conversionRate,
+
+
+        "Active Representatives":
+        analytics.sales?.representatives,
+
+
+        "Total Calls":
+        analytics.sales?.totalCalls,
+
+
+        "Top Campaign":
+        analytics.campaigns?.topCampaign,
+
+
+        "Lead Sources":
+        analytics.campaigns?.totalCampaigns
+
+
+    };
+
+
+    return metrics[metricName] ?? "N/A";
+
+}
+
+
+
+
+
+
+/* ======================================
+   PAGE LOAD
+====================================== */
 
 
 document.addEventListener(
@@ -263,50 +216,7 @@ document.addEventListener(
 ()=>{
 
 
-    console.log(
-        "REPORTS JS LOADED"
-    );
-
-
     updateDate();
-
-
-
-    let stored =
-    sessionStorage.getItem(
-        "crmData"
-    );
-
-
-
-    if(stored){
-
-
-        crmData =
-        JSON.parse(stored);
-
-
-
-        console.log(
-            "CRM DATA LOADED:",
-            crmData.length
-        );
-
-
-    }
-
-
-    else{
-
-
-        console.log(
-            "No CRM data found"
-        );
-
-
-    }
-
-
 
 
 
@@ -316,18 +226,53 @@ document.addEventListener(
     );
 
 
-
     if(button){
-
 
         button.addEventListener(
             "click",
             generateReport
         );
 
+    }
+
+
+
+    const downloadButton =
+    document.getElementById(
+        "download-pdf-btn"
+    );
+
+
+    if(downloadButton){
+
+        downloadButton.addEventListener(
+            "click",
+            downloadReportPDF
+        );
 
     }
 
+
+
+    const storedData =
+    sessionStorage.getItem(
+        "crmData"
+    );
+
+
+    if(!storedData){
+
+        showNotification(
+            "CRM Data Required",
+            "Please upload an Excel or CSV file from the Dashboard first."
+        );
+
+    }
+
+
+    console.log(
+        "Reports loaded"
+    );
 
 
 });
@@ -335,17 +280,7 @@ document.addEventListener(
 
 
 
-
-
-
-
 function updateDate(){
-
-
-    let date =
-    new Date();
-
-
 
     const element =
     document.getElementById(
@@ -353,21 +288,23 @@ function updateDate(){
     );
 
 
-    if(element){
+    if(!element){
 
-
-        element.innerText =
-        date.toLocaleDateString(
-            "en-US",
-            {
-                month:"long",
-                day:"numeric",
-                year:"numeric"
-            }
-        );
+        return;
 
     }
 
+
+    element.innerText =
+    new Date()
+    .toLocaleDateString(
+        "en-US",
+        {
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        }
+    );
 
 }
 
@@ -375,42 +312,15 @@ function updateDate(){
 
 
 
-
-
-
-function calculateMetric(metricName){
-
-
-    if(
-        metricFunctions[metricName]
-    ){
-
-
-        return metricFunctions[metricName]();
-
-
-    }
-
-
-
-    return "N/A";
-
-
-}
-
-
-
-
-
-
-
+/* ======================================
+   REPORT GENERATION
+====================================== */
 
 
 async function generateReport(){
 
 
-
-    let selected =
+    const selected =
     document.querySelectorAll(
         ".metric:checked"
     );
@@ -419,96 +329,74 @@ async function generateReport(){
 
     if(selected.length===0){
 
-
         showNotification(
             "No Metrics Selected",
-            "Please select information to include in the report."
+            "Please select information to include."
         );
-
 
         return;
 
+    }
+
+
+
+    const analytics =
+    getReportAnalytics();
+
+
+
+    if(!analytics){
+
+        showNotification(
+            "Analytics Missing",
+            "Visit Dashboard, Leads, Sales and Campaigns after uploading data."
+        );
+
+        return;
 
     }
 
 
 
 
-
-
-    let html = "";
-
-    let aiMetrics=[];
-
-
-
-
+    let metrics=[];
 
 
     selected.forEach(item=>{
 
 
-        let metricName =
+        let name =
         item.dataset.name;
 
 
 
         let value =
-        calculateMetric(
-            metricName
+        getMetricValue(
+            name
         );
 
 
 
-        html +=
+        metrics.push({
 
-        `
-
-        <div class="report-item">
-
-            <strong>
-            ${metricName}
-            </strong>
-
-            :
-            ${value}
-
-        </div>
-
-        `;
-
-
-
-        aiMetrics.push({
-
-            name:metricName,
+            name:name,
 
             value:value
 
         });
 
 
-
     });
 
 
 
-
-
-
-    document
-    .getElementById(
-        "report-preview"
-    )
-    .innerHTML =
-    html;
-
-
+    lastReportMetrics =
+    metrics;
 
 
 
     await generateAIInsights(
-        aiMetrics
+        metrics
     );
 
 
@@ -519,10 +407,40 @@ async function generateReport(){
 
 
 
+/* ======================================
+   GEMINI REQUEST
+====================================== */
 
 
+async function generateAIInsights(metrics){
 
-async function generateAIInsights(reportData){
+
+    const container =
+    document.getElementById(
+        "insights"
+    );
+
+
+    container.innerHTML = `
+
+    <div class="insights-loading">
+
+        <div class="loading-bar-track">
+
+            <div class="loading-bar-fill"></div>
+
+        </div>
+
+
+        <p class="loading-text">
+        Generating AI insights...
+        </p>
+
+
+    </div>
+
+    `;
+
 
 
     try{
@@ -530,34 +448,21 @@ async function generateAIInsights(reportData){
 
         const response =
         await fetch(
+        "http://127.0.0.1:5000/generate-insight",
+        {
 
-            "http://127.0.0.1:5000/generate-insight",
+            method:"POST",
 
-            {
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
 
-                method:"POST",
+            body:JSON.stringify({
+                metrics:metrics
+            })
 
-                headers:{
-
-                    "Content-Type":
-                    "application/json"
-
-                },
-
-
-                body:
-
-                JSON.stringify({
-
-                    metrics:reportData
-
-                })
-
-
-            }
-
-        );
-
+        });
 
 
 
@@ -566,27 +471,45 @@ async function generateAIInsights(reportData){
 
 
 
-
-
         if(result.insight){
+
+
+            generatedAIReport =
+            JSON.parse(
+                result.insight
+            );
+
+
+
+            container.innerHTML =
+            "AI insights generated successfully.";
+
 
 
             document
             .getElementById(
-                "insights"
+                "report-preview"
             )
             .innerHTML =
+            createReportPage(
+                lastReportMetrics,
+                generatedAIReport
+            );
 
 
-            `
 
-            <div class="ai-result">
+            const downloadButton =
+            document.getElementById(
+                "download-pdf-btn"
+            );
 
-            ${result.insight.replace(/\n/g,"<br>")}
 
-            </div>
+            if(downloadButton){
 
-            `;
+                downloadButton.disabled = false;
+
+            }
+
 
 
         }
@@ -594,62 +517,313 @@ async function generateAIInsights(reportData){
 
         else{
 
-
             throw new Error(
                 result.error
             );
 
-
         }
-
 
 
 
     }
 
 
-
     catch(error){
 
 
-
         console.error(
-            "AI ERROR:",
             error
         );
 
 
-
-        document
-        .getElementById(
-            "insights"
-        )
-        .innerHTML =
-
-
-        `
+        container.innerHTML = `
 
         <div class="ai-error">
 
-        ❗ AI analysis is currently unavailable.
+        AI service temporarily unavailable. Generated report using built-in analytics.
 
         </div>
 
         `;
 
 
+        showNotification(
+            "AI Error",
+            "Unable to generate insights."
+        );
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+function escapeHtml(text){
+
+return String(text)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;");
+
+}
+
+
+
+
+
+
+function createReportPage(metrics, aiReport){
+
+
+    let cards = "";
+
+
+    metrics.forEach(item=>{
+
+
+        cards += `
+
+        <div class="report-kpi-card">
+
+            <p>
+            ${item.name}
+            </p>
+
+            <h2>
+            ${item.value}
+            </h2>
+
+        </div>
+
+        `;
+
+
+    });
+
+
+
+return `
+
+<div class="report-page">
+
+
+<div class="report-header">
+
+<h1>
+CRM Analytics Report
+</h1>
+
+
+<p class="report-subtitle">
+Real Estate Performance Intelligence
+</p>
+
+
+<p class="report-date">
+Generated:
+${new Date().toLocaleDateString()}
+</p>
+
+
+</div>
+
+
+
+<div class="report-kpi-grid">
+
+${cards}
+
+</div>
+
+
+
+
+<div class="report-section">
+
+<h3>
+Executive Summary
+</h3>
+
+
+<div class="report-summary">
+
+${escapeHtml(aiReport.executive_summary)}
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="report-section">
+
+<h3>
+Important Findings
+</h3>
+
+
+<ul class="report-list">
+
+${aiReport.important_findings.map(
+item =>
+`<li>${escapeHtml(item)}</li>`
+).join("")}
+
+</ul>
+
+
+</div>
+
+
+
+
+
+<div class="report-section">
+
+<h3>
+Recommended Actions
+</h3>
+
+
+<ul class="report-list">
+
+${aiReport.recommended_actions.map(
+item =>
+`<li>${escapeHtml(item)}</li>`
+).join("")}
+
+</ul>
+
+
+</div>
+
+
+
+
+
+<div class="report-footer">
+
+CRM Analytics Dashboard Generator
+<br>
+Automated Business Intelligence Report
+
+</div>
+
+
+
+</div>
+
+`;
+
+}
+
+
+
+
+
+
+
+/* ======================================
+   PDF EXPORT
+====================================== */
+
+
+function downloadReportPDF(){
+
+
+    const report =
+    document.querySelector(
+        ".report-page"
+    );
+
+
+
+    if(!report){
+
 
         showNotification(
+            "No Report Available",
+            "Generate a report before downloading."
+        );
 
-            "AI Error",
 
-            "Unable to generate insights right now."
+        return;
 
+    }
+
+
+
+    html2canvas(
+        report,
+        {
+            scale:2
+        }
+
+    )
+    .then(canvas=>{
+
+
+        const imgData =
+        canvas.toDataURL(
+            "image/png"
         );
 
 
 
-    }
+        const { jsPDF } =
+        window.jspdf;
+
+
+
+        const pdf =
+        new jsPDF(
+            "p",
+            "mm",
+            "a4"
+        );
+
+
+
+        const width =
+        pdf.internal.pageSize.getWidth();
+
+
+
+        const height =
+        canvas.height *
+        width /
+        canvas.width;
+
+
+
+        pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            0,
+            width,
+            height
+        );
+
+
+
+        pdf.save(
+            "CRM_Analytics_Report.pdf"
+        );
+
+
+    });
 
 
 }

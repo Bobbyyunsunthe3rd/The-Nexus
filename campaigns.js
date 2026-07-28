@@ -411,7 +411,27 @@ function updateKPIs(){
     +
     "%";
 
+    let reportAnalytics =
+    JSON.parse(
+        sessionStorage.getItem("reportAnalytics")
+    ) || {};
 
+
+    reportAnalytics.campaigns = {
+
+        topCampaign: best || "Unknown",
+
+        totalCampaigns: campaignNames.length,
+
+        conversionRate: rate.toFixed(1) + "%"
+
+    };
+
+
+    sessionStorage.setItem(
+        "reportAnalytics",
+        JSON.stringify(reportAnalytics)
+    );
 }
 
 

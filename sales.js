@@ -475,7 +475,27 @@ function updateSalesKPIs(reps){
     document.getElementById("team-conversion-rate").innerText =
     conversionRate.toFixed(1) + "%";
 
+    let reportAnalytics =
+    JSON.parse(
+        sessionStorage.getItem("reportAnalytics")
+    ) || {};
 
+
+    reportAnalytics.sales = {
+
+        representatives: repNames.length,
+
+        totalCalls: totalCalls,
+
+        conversionRate: conversionRate.toFixed(1) + "%"
+
+    };
+
+
+    sessionStorage.setItem(
+        "reportAnalytics",
+        JSON.stringify(reportAnalytics)
+    );
 }
 
 
