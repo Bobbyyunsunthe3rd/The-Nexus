@@ -448,7 +448,7 @@ async function generateAIInsights(metrics){
 
         const response =
         await fetch(
-        "/.netlify/functions/generate-insight",
+         "https://thenexus.pythonanywhere.com/generate-insight",
         {
 
             method:"POST",
