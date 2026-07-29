@@ -474,7 +474,11 @@ async function generateAIInsights(metrics){
         if(result.insight){
 
 
-            generatedAIReport = JSON.parse(result.insight);
+            generatedAIReport = {
+                executive_summary: result.insight,
+                important_findings: [],
+                recommended_actions: []
+            };
 
 
 
