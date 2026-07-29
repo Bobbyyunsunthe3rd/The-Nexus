@@ -141,60 +141,60 @@
 ========================= */
 
 
-.report-stats-grid{
+.report-kpi-grid{
 
     display:grid;
 
-    grid-template-columns:
-    repeat(2,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
 
-    gap:18px;
+    gap:16px;
+
+    margin-bottom:40px;
 
 }
 
 
-.report-stat-card{
+.report-kpi-card{
 
     background:#faf7f2;
 
-    border-radius:12px;
-
-    padding:18px;
-
-    display:flex;
-
-    flex-direction:column;
+    border:1px solid #efe7da;
 
     border-left:4px solid var(--gold);
 
-}
+    border-radius:12px;
 
-
-.report-stat-icon{
-
-    display:none;
+    padding:18px 20px;
 
 }
 
 
-.report-stat-info p{
+.report-kpi-card p{
 
     color:var(--muted);
 
-    font-size:12px;
+    font-size:11px;
+
+    font-weight:600;
+
+    letter-spacing:.6px;
 
     text-transform:uppercase;
 
-    margin-bottom:8px;
+    margin:0 0 8px;
 
 }
 
 
-.report-stat-info h4{
+.report-kpi-card h2{
 
     color:var(--navy);
 
-    font-size:24px;
+    font-size:26px;
+
+    font-weight:700;
+
+    line-height:1.1;
 
     margin:0;
 
@@ -348,11 +348,11 @@
 
     margin:40px auto;
 
-    padding:60px;
+    padding:52px 60px;
 
     box-sizing:border-box;
 
-    color:#333;
+    color:#2c2c2c;
 
     box-shadow:
     0 12px 35px rgba(0,0,0,.12);
@@ -366,33 +366,54 @@
 .report-header{
 
     border-bottom:
-    3px solid var(--gold);
+    2px solid var(--gold);
 
-    padding-bottom:25px;
+    padding-bottom:22px;
 
-    margin-bottom:35px;
+    margin-bottom:34px;
 
 }
 
 
-.report-header h2{
+.report-header h1{
 
     color:var(--navy);
 
-    font-size:30px;
+    font-size:32px;
 
-    margin-bottom:10px;
+    font-weight:800;
+
+    letter-spacing:-.5px;
+
+    margin:0 0 8px;
 
 }
 
 
-.report-header p{
+.report-subtitle{
+
+    color:var(--gold);
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    margin:0 0 14px;
+
+}
+
+
+.report-date{
 
     color:var(--muted);
 
-    margin:5px 0;
+    margin:0;
 
-    font-size:14px;
+    font-size:13px;
 
 }
 
@@ -412,7 +433,9 @@
 
     color:var(--navy);
 
-    font-size:19px;
+    font-size:17px;
+
+    letter-spacing:.2px;
 
     border-left:
     5px solid var(--gold);
@@ -435,9 +458,9 @@
     "Times New Roman",
     serif;
 
-    font-size:18px;
+    font-size:16px;
 
-    line-height:1.9;
+    line-height:1.75;
 
     color:#3f3f3f;
 
@@ -479,7 +502,7 @@
 
 .report-footer{
 
-    margin-top:70px;
+    margin-top:48px;
 
     padding-top:15px;
 

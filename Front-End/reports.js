@@ -448,7 +448,7 @@ async function generateAIInsights(metrics){
 
         const response =
         await fetch(
-        "http://127.0.0.1:5000/generate-insight",
+        "/.netlify/functions/generate-insight",
         {
 
             method:"POST",
@@ -764,10 +764,21 @@ function downloadReportPDF(){
 
 
 
+    // Force the report to its full A4 render width before capture so the
+    // exported PDF looks identical regardless of the screen size it was
+    // generated on (otherwise a narrow window produces a squished, many-page PDF).
+    const prevWidth = report.style.width;
+    report.style.width = "794px";
+
+
     html2canvas(
         report,
         {
-            scale:2
+            scale:2,
+            width:794,
+            windowWidth:1200,
+            backgroundColor:"#ffffff",
+            useCORS:true
         }
 
     )
@@ -795,33 +806,71 @@ function downloadReportPDF(){
 
 
 
-        const width =
+        const pageWidth =
         pdf.internal.pageSize.getWidth();
 
 
+        const pageHeight =
+        pdf.internal.pageSize.getHeight();
 
-        const height =
+
+        const imgHeight =
         canvas.height *
-        width /
+        pageWidth /
         canvas.width;
 
 
+        // Slice the tall report image across as many A4 pages as needed
+        // so long reports don't get cut off at the bottom of page 1.
+
+        let heightLeft = imgHeight;
+        let position = 0;
+
 
         pdf.addImage(
-            imgData,
-            "PNG",
-            0,
-            0,
-            width,
-            height
+            imgData, "PNG",
+            0, position,
+            pageWidth, imgHeight
         );
 
+        heightLeft -= pageHeight;
+
+
+        while(heightLeft > 0){
+
+            position -= pageHeight;
+            pdf.addPage();
+
+            pdf.addImage(
+                imgData, "PNG",
+                0, position,
+                pageWidth, imgHeight
+            );
+
+            heightLeft -= pageHeight;
+
+        }
 
 
         pdf.save(
             "CRM_Analytics_Report.pdf"
         );
 
+
+    })
+    .catch(err=>{
+
+        console.error(err);
+
+        showNotification(
+            "PDF Failed",
+            "Could not generate the PDF. Please try again."
+        );
+
+    })
+    .finally(()=>{
+
+        report.style.width = prevWidth;
 
     });
 

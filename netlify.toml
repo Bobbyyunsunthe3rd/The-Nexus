@@ -1,0 +1,14 @@
+# Netlify configuration for The Nexus (CRM Analytics Dashboard)
+
+[build]
+  # The static site lives in Front-End/. Netlify serves index.html (the login
+  # page) at the site root, so visitors land on login first.
+  publish = "Front-End"
+
+  # Serverless functions (the Gemini backend that replaces backend/app.py).
+  functions = "netlify/functions"
+
+[functions]
+  # No third-party npm deps — the function uses the built-in global fetch,
+  # available on Netlify's Node 18+ runtime.
+  node_bundler = "esbuild"

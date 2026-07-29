@@ -1,0 +1,321 @@
+/* =====================================================================
+   Settings overlay — shared across all app pages (injected by settings.js).
+   Opens as a modal ON TOP of the current page rather than being its own
+   route. Colours are hard-coded to the brand palette so this file is
+   self-contained regardless of which page stylesheet is loaded.
+        navy #214268 · cream #ebe2d6 · gold #b38f60
+   ===================================================================== */
+
+
+.settings-overlay{
+    position:fixed;
+    inset:0;
+    z-index:10000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+}
+
+.settings-overlay[hidden]{ display:none; }
+
+
+.settings-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(20,38,60,0.55);
+    -webkit-backdrop-filter:blur(3px);
+    backdrop-filter:blur(3px);
+    animation:settingsFade .2s ease;
+}
+
+
+.settings-panel{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 30px 70px rgba(0,0,0,.35);
+    animation:settingsPop .22s cubic-bezier(.2,.8,.2,1);
+}
+
+
+@keyframes settingsFade{ from{opacity:0} to{opacity:1} }
+@keyframes settingsPop{
+    from{ opacity:0; transform:translateY(12px) scale(.98) }
+    to{ opacity:1; transform:none }
+}
+
+
+/* ---- Header ---- */
+
+.settings-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    padding:24px 26px;
+    background:#214268;
+    color:#fff;
+}
+
+.settings-head h2{ margin:0; font-size:20px; }
+.settings-head p{ margin:4px 0 0; font-size:13px; color:#c8d4e2; }
+
+.settings-close{
+    flex-shrink:0;
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:9px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:15px;
+    cursor:pointer;
+}
+.settings-close:hover{ background:rgba(255,255,255,.24); }
+
+
+/* ---- Body ---- */
+
+.settings-body{
+    padding:8px 26px 4px;
+    overflow-y:auto;
+}
+
+.settings-group{
+    padding:20px 0;
+    border-bottom:1px solid #efe7da;
+}
+.settings-group:last-child{ border-bottom:none; }
+
+.settings-group h3{
+    margin:0 0 14px;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#b38f60;
+}
+
+
+.settings-field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom:14px;
+}
+.settings-field:last-child{ margin-bottom:0; }
+
+.settings-field span{ font-size:13px; font-weight:600; color:#6b7280; }
+
+.settings-field input{
+    padding:11px 13px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    color:#1d2939;
+    background:#faf7f2;
+}
+.settings-field input:focus{
+    outline:none;
+    border-color:#b38f60;
+    background:#fff;
+}
+
+
+.settings-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+}
+.settings-row strong{ display:block; color:#214268; font-size:15px; }
+.settings-row > div span{ display:block; margin-top:2px; font-size:12px; color:#6b7280; }
+
+
+.settings-btn{
+    flex-shrink:0;
+    border:none;
+    border-radius:10px;
+    padding:10px 16px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+.settings-btn.danger{ background:#fdecec; color:#c73a3a; }
+.settings-btn.danger:hover{ background:#f9d9d9; }
+
+.settings-btn.logout{ background:#214268; color:#fff; }
+.settings-btn.logout:hover{ background:#2d557f; }
+
+
+.settings-pill{
+    flex-shrink:0;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:#8a6d3b;
+    background:#f4eadc;
+    padding:6px 11px;
+    border-radius:999px;
+}
+
+
+.settings-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    cursor:pointer;
+    font-size:14px;
+    color:#1d2939;
+}
+.settings-toggle input{
+    width:18px;
+    height:18px;
+    accent-color:#b38f60;
+    cursor:pointer;
+}
+
+
+/* ---- Footer ---- */
+
+.settings-foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:16px 26px;
+    border-top:1px solid #efe7da;
+    background:#faf7f2;
+}
+
+.settings-about{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    color:#6b7280;
+}
+.settings-swatch{
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border-radius:4px;
+    border:1px solid rgba(0,0,0,.08);
+}
+
+
+/* ---- "Reduce animations" preference ---- */
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after{
+    animation-duration:0s !important;
+    animation-iteration-count:1 !important;
+    transition:none !important;
+}
+
+
+/* Two-line toggle rows (title + description) */
+.settings-toggle > div{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+.settings-toggle-title{ font-size:14px; font-weight:500; color:#1d2939; }
+.settings-toggle-sub{ font-size:12px; color:#6b7280; }
+
+
+/* =====================================================================
+   DARK MODE — applied app-wide via <html data-theme="dark">.
+   The sidebar is already navy so it fits; the settings modal stays light.
+   Content rules are scoped to .main so they never touch the modal.
+   ===================================================================== */
+
+html[data-theme="dark"] body{
+    background:#0e1a28;
+    color:#e6ebf2;
+}
+
+/* Headings + muted text that were dark navy */
+html[data-theme="dark"] .main h1,
+html[data-theme="dark"] .main h2,
+html[data-theme="dark"] .main h3,
+html[data-theme="dark"] .main h4{
+    color:#e9eef5;
+}
+html[data-theme="dark"] .main > p,
+html[data-theme="dark"] .header p,
+html[data-theme="dark"] .kpi-card p,
+html[data-theme="dark"] .section-description{
+    color:#9fb0c3;
+}
+
+/* Cards / panels (were white) */
+html[data-theme="dark"] .main .card,
+html[data-theme="dark"] .main .kpi-card,
+html[data-theme="dark"] .main .chart-card,
+html[data-theme="dark"] .main .table-card,
+html[data-theme="dark"] .main .source-card,
+html[data-theme="dark"] .main .upload-panel,
+html[data-theme="dark"] .main .filter-panel,
+html[data-theme="dark"] .main .rep-card,
+html[data-theme="dark"] .main .date-picker{
+    background:#17283c !important;
+    color:#e6ebf2;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Inset / cream surfaces (#faf7f2, #fcfaf6, #fffdf8, #e8eef5) */
+html[data-theme="dark"] .main .upload-box,
+html[data-theme="dark"] .main .sources div,
+html[data-theme="dark"] .main .funnel > div,
+html[data-theme="dark"] .main .hot-box > div,
+html[data-theme="dark"] .main .rep-stat,
+html[data-theme="dark"] .main #report-preview,
+html[data-theme="dark"] .main #insights,
+html[data-theme="dark"] .main #upload-status,
+html[data-theme="dark"] .main .report-category{
+    background:#1f3149 !important;
+    color:#e6ebf2;
+}
+html[data-theme="dark"] .main .report-category label{
+    background:#26384f !important;
+    color:#e6ebf2;
+}
+
+/* KPI icon chips */
+html[data-theme="dark"] .main .kpi-card .icon,
+html[data-theme="dark"] .main .kpi-card .icon.gold{
+    background:#22364e;
+}
+
+/* Tables */
+html[data-theme="dark"] .main td{
+    border-bottom-color:rgba(255,255,255,.09);
+    color:#dbe4ee;
+}
+html[data-theme="dark"] .main th{
+    background:#101f33;
+}
+
+/* Inputs / selects inside the page (not the modal) */
+html[data-theme="dark"] .main select,
+html[data-theme="dark"] .main input{
+    background:#1f3149;
+    border-color:#2f4763;
+    color:#e6ebf2;
+}
+
+/* Toast notifications (rendered outside .main) */
+html[data-theme="dark"] .dashboard-notification{
+    background:#17283c;
+    color:#e6ebf2;
+}

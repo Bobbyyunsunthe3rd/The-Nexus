@@ -1,3 +1,16 @@
+/* =====================================================================
+   LEADS PAGE STYLES  (leads.html)
+
+   This file also carries the SHARED BASE LAYOUT (sidebar, header, KPI
+   cards, tables). reports.html and sales.html reuse it by also linking
+   leads.css.
+
+   /!\  These base styles are DUPLICATED across styles.css, campaigns.css
+        and sales.css. A change to the shared layout must be applied to
+        each copy. See README.md > Gotchas.
+   ===================================================================== */
+
+
 :root{
 
 --navy:#214268;

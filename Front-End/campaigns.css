@@ -1,3 +1,13 @@
+/* =====================================================================
+   CAMPAIGNS PAGE STYLES  (campaigns.html)
+
+   /!\  Contains its own copy of the SHARED BASE LAYOUT (sidebar, header,
+        KPI cards, tables) that is also duplicated in styles.css, leads.css
+        and sales.css. Keep shared-layout changes in sync across all four.
+        See README.md > Gotchas.
+   ===================================================================== */
+
+
 :root{
 
 --navy:#214268;

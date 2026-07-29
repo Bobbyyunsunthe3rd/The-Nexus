@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="settings.css">
+</head>
+
+<body>
+
+
+<div id="notification-container"></div>
+
+
+<div class="dashboard">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+
+<div class="brand">
+
+<div class="logo-icon">
+◆
+</div>
+
+<div>
+<h2>CRM ANALYTICS</h2>
+<span>REAL ESTATE</span>
+</div>
+
+</div>
+
+
+<nav>
+
+<a href="dashboard.html" class="active">
+<span>▦</span>
+Dashboard
+</a>
+
+<a href="leads.html">
+<span>♟</span>
+Leads
+</a>
+
+<a href="campaigns.html">
+<span>◉</span>
+Campaigns
+</a>
+
+<a href="sales.html">
+<span>♧</span>
+Sales Team
+</a>
+
+<a href="reports.html">
+<span>▥</span>
+Reports
+</a>
+
+<a href="settings.html">
+<span>⚙</span>
+Settings
+</a>
+
+</nav>
+
+
+<div class="profile">
+
+<div class="avatar">
+TC
+</div>
+
+<div>
+<strong>The Cascades</strong>
+<small>Admin</small>
+</div>
+
+</div>
+
+
+</aside>
+
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+<header class="header">
+
+<div>
+<p class="welcome">Dashboard</p>
+<h1>CRM Analytics Overview</h1>
+<p>Upload your Sell.do lead export to generate live analytics.</p>
+</div>
+
+<button class="date-picker">
+📅 <span id="current-date"></span>
+</button>
+
+</header>
+
+
+
+
+<!-- UPLOAD PANEL -->
+
+<section class="upload-panel">
+
+<h3>Import CRM Data</h3>
+
+<p>Upload an Excel (.xlsx / .xls) or CSV export. Your file is read entirely in the browser — nothing is sent to a server.</p>
+
+
+<label class="upload-box" for="file-upload">
+
+<div class="upload-icon">⬆</div>
+
+<strong>Click to choose a file</strong>
+
+<span>Excel or CSV from Sell.do</span>
+
+<input
+type="file"
+id="file-upload"
+accept=".xlsx,.xls,.csv">
+
+</label>
+
+
+<div style="display:flex; align-items:center; gap:18px; flex-wrap:wrap;">
+
+<button id="upload-btn">Load Data</button>
+
+<span id="upload-status">No file uploaded</span>
+
+</div>
+
+</section>
+
+
+
+
+<!-- KPI CARDS -->
+
+<section class="kpi-container">
+
+
+<div class="kpi-card">
+<div class="icon">👥</div>
+<div>
+<p>Total Leads</p>
+<h2 id="total-leads">-</h2>
+<span class="growth">All uploaded records</span>
+</div>
+</div>
+
+
+<div class="kpi-card">
+<div class="icon">🔥</div>
+<div>
+<p>Hot Leads</p>
+<h2 id="hot-leads">-</h2>
+<span class="growth">Hotness &gt; 50</span>
+</div>
+</div>
+
+
+<div class="kpi-card">
+<div class="icon">✓</div>
+<div>
+<p>Qualified Leads</p>
+<h2 id="qualified-leads">-</h2>
+<span class="growth">Qualified or interested</span>
+</div>
+</div>
+
+
+<div class="kpi-card">
+<div class="icon gold">📈</div>
+<div>
+<p>Conversions</p>
+<h2 id="conversions">-</h2>
+<span class="growth">Booked / site visit done</span>
+</div>
+</div>
+
+
+</section>
+
+
+
+
+<!-- FILTERS -->
+
+<section class="filter-panel">
+
+<h3>Filter Analytics</h3>
+
+<div class="filters">
+
+<select id="salesperson-stats">
+<option value="">Select Salesperson</option>
+</select>
+
+<select id="lead-campaigns">
+<option value="">Select Campaign</option>
+</select>
+
+<button>Apply Filters</button>
+
+</div>
+
+</section>
+
+
+
+
+<!-- ANALYTICS -->
+
+<section class="analytics-grid">
+
+
+<div class="chart-card">
+
+<div class="card-header">
+<h3>Leads Over Time</h3>
+</div>
+
+<canvas id="leadChart"></canvas>
+
+</div>
+
+
+
+<div class="table-card">
+
+<div class="card-header">
+<h3>Top Salespeople</h3>
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Salesperson</th>
+<th>Qualified</th>
+<th>Unqualified</th>
+<th>Conversion</th>
+</tr>
+</thead>
+
+<tbody id="sales-table">
+</tbody>
+
+</table>
+
+</div>
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+
+
+
+<!-- SheetJS (Excel/CSV parsing) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<!-- Chart.js (leads-over-time line chart) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Dashboard logic (upload + analytics) -->
+<script src="script.js"></script>
+
+<!-- Settings overlay (shared across pages) -->
+<script src="settings.js"></script>
+
+
+</body>
+
+</html>

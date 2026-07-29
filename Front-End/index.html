@@ -1,314 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lead Analytics</title>
-<link rel="icon" type="image/png" href="favicon.png">
+    <title>
+        CRM Analytics Login
+    </title>
+    <link rel="icon" type="image/png" href="favicon.png">
 
-<link rel="stylesheet" href="leads.css">
+    <link rel="stylesheet" href="l-styles.css">
 
 </head>
 
-<div id="notification-container"></div>
-<body>
 
+<body class="login-page">
 
-<div class="dashboard">
 
+<div class="login-box">
 
-<!-- SIDEBAR -->
 
-<aside class="sidebar">
+    <h1>
+        CRM Analytics
+    </h1>
 
 
-<div class="brand">
+    <p>
+        Sign in to access your dashboard
+    </p>
 
-<div class="logo-icon">
-◆
-</div>
 
-<div>
 
-<h2>
-CRM ANALYTICS
-</h2>
+    <form id="login-form">
 
-<span>
-REAL ESTATE
-</span>
 
-</div>
+        <input 
+            id="username"
+            type="text"
+            placeholder="Username"
+            autocomplete="username"
+            spellcheck="false">
 
-</div>
 
 
+        <div class="password-container">
 
-<nav>
 
-<a href="dashboard.html">
-<span>▦</span>
-Dashboard
-</a>
+            <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password">
 
 
-<a href="leads.html" class="active">
-<span>♟</span>
-Leads
-</a>
 
+            <span id="toggle-password" role="button" tabindex="0" aria-label="Show password">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
 
-<a href="campaigns.html">
-<span>◉</span>
-Campaigns
-</a>
 
+        </div>
 
-<a href="sales.html">
-<span>♧</span>
-Sales Team
-</a>
 
 
-<a href="reports.html">
-<span>▥</span>
-Reports   
-</a>
 
+        <div class="login-options">
 
-<a href="settings.html">
-<span>⚙</span>
-Settings   
-</a>
 
+            <label>
 
-</nav>
 
+                <input 
+                    type="checkbox" 
+                    id="remember-me">
 
 
-<div class="profile">
+                Remember username
 
 
-<div class="avatar">
-TC
-</div>
+            </label>
 
 
-<div>
+        </div>
 
-<strong>
-The Cascades
-</strong>
 
-<small>
-Admin
-</small>
 
 
-</div>
 
+        <button type="submit">
 
-</div>
+            Login
 
+        </button>
 
-</aside>
 
 
+    </form>
 
 
 
-<!-- MAIN -->
 
-<main class="main">
+    <p id="login-error"></p>
 
-
-<header class="header">
-
-
-<div>
-
-<p class="welcome">
-Lead Analytics
-</p>
-
-
-<h1>
-Lead Performance Dashboard
-</h1>
-
-
-<p>
-Understand lead quality, movement and conversion.
-</p>
-
-
-</div>
-
-
-<button class="date-picker">
-
-📅 <span id="current-date"></span>
-
-</button>
-
-
-</header>
-
-
-
-
-
-<!-- KPI CARDS -->
-
-
-<section class="kpi-container">
-
-
-
-<div class="kpi-card">
-
-<div class="icon">
-👥
-</div>
-
-<div>
-
-<p>
-Total Leads
-</p>
-
-<h2 id="total-leads">
--
-</h2>
-
-<span>
-↑ 12% this month
-</span>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="kpi-card">
-
-<div class="icon">
-🔥
-</div>
-
-<div>
-
-<p>
-Hot Leads
-</p>
-
-<h2 id="hot-leads">
--
-</h2>
-
-<span>
-↑ 18% this month
-</span>
-
-</div>
-
-</div>
-
-
-
-
-
-
-<div class="kpi-card">
-
-<div class="icon">
-✓
-</div>
-
-<div>
-
-<p>
-Qualified Leads
-</p>
-
-<h2 id="qualified-leads">
--
-</h2>
-
-<span>
-↑ 8% this month
-</span>
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="kpi-card">
-
-<div class="icon gold">
-📈
-</div>
-
-<div>
-
-<p>
-Conversion Rate
-</p>
-
-<h2 id="conversion-rate">
--
-</h2>
-
-<span>
-↑ 3% improvement
-</span>
-
-</div>
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-<!-- ANALYTICS -->
-
-
-<section class="analytics-grid">
-
-
-
-<div class="card">
-
-
-<h3>
-Lead Funnel
-</h3>
-
-
-<div class="funnel">
-    <div>New Leads<strong id="funnel-new">-</strong></div>
-    <div>Contacted<strong id="funnel-contacted">-</strong></div>
-    <div>Interested<strong id="funnel-interested">-</strong></div>
-    <div>Site Visits<strong id="funnel-sitevisits">-</strong></div>
-    <div>Converted<strong id="funnel-converted">-</strong></div>
-</div>
 
 
 </div>
@@ -317,94 +112,9 @@ Lead Funnel
 
 
 
+<script src="login.js"></script>
 
-
-<div class="card">
-
-
-<h3>
-Lead Hotness
-</h3>
-
-
-<div class="hot-box">
-    <div>🔥 Hot<strong id="hotness-hot">-</strong></div>
-    <div>🌡 Warm<strong id="hotness-warm">-</strong></div>
-    <div>❄ Cold<strong id="hotness-cold">-</strong></div>
-</div>
-
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<section class="card">
-
-
-<h3>
-Top Lead Sources
-</h3>
-
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>
-Source
-</th>
-
-<th>
-Leads
-</th>
-
-<th>
-Conversion
-</th>
-
-</tr>
-
-
-</thead>
-
-
-<tbody id="sources-table">
-
-
-</tbody>
-
-
-</table>
-
-
-</section>
-
-
-
-
-</main>
-
-
-</div>
-
-
-<script src="leads.js"></script>
 
 </body>
-
 
 </html>

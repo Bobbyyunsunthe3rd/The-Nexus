@@ -1,5 +1,12 @@
 /* ======================================
-   CAMPAIGN ANALYTICS
+   CAMPAIGN ANALYTICS  (campaigns.html)
+
+   Reads sessionStorage.crmData and renders the
+   campaign KPIs and charts.
+
+   Also writes sessionStorage.reportAnalytics.campaigns
+   for the Reports page.
+   See README.md > "How it works — data flow".
 ====================================== */
 
 

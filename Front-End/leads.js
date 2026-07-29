@@ -1,5 +1,14 @@
 /* ======================================
-   LEADS ANALYTICS
+   LEADS ANALYTICS  (leads.html)
+
+   Reads sessionStorage.crmData (parsed by
+   script.js on the Dashboard) and renders the
+   Leads KPIs, funnel and hotness breakdown.
+
+   Also writes a summary slice to
+   sessionStorage.reportAnalytics.leads, which
+   the Reports page consumes.
+   See README.md > "How it works — data flow".
 ====================================== */
 
 

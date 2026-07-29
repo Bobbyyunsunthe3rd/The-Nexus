@@ -1,5 +1,14 @@
 /* ======================================
-   MAIN DASHBOARD (Upload + Analytics)
+   MAIN DASHBOARD  (dashboard.html)
+   Upload + parse + overview analytics.
+
+   Parses the uploaded Excel/CSV with SheetJS
+   (handling the Sell.do metadata preamble),
+   stores the rows in sessionStorage.crmData,
+   then renders the dashboard KPIs, chart and
+   sales table. This is the SOURCE of crmData
+   that every other page reads.
+   See README.md > "How it works — data flow".
 ====================================== */
 
 let crmData = [];
@@ -312,12 +321,6 @@ function parseFile(file){
 
 
             generateDashboard();
-
-
-            showNotification(
-                "Dashboard Updated",
-                `Loaded ${crmData.length} leads successfully.`
-            );
 
 
         }

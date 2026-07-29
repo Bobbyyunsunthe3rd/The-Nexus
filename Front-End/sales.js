@@ -1,5 +1,12 @@
 /* ======================================
-   SALES TEAM ANALYTICS
+   SALES TEAM ANALYTICS  (sales.html)
+
+   Reads sessionStorage.crmData and renders the
+   rep-level KPIs and charts.
+
+   Also writes sessionStorage.reportAnalytics.sales
+   for the Reports page.
+   See README.md > "How it works — data flow".
 ====================================== */
 
 
