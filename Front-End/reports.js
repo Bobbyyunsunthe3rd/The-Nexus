@@ -466,8 +466,11 @@ async function generateAIInsights(metrics){
 
 
 
-        const result =
-        await response.json();
+        const text = await response.text();
+
+        console.log("SERVER RESPONSE:", text);
+
+        const result = JSON.parse(text);
 
 
 
